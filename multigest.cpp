@@ -1,0 +1,69 @@
+#include<highgui.h>
+#include<cv.h>
+#include<iostream>
+
+using namespace std;
+using namespace cv;
+
+CvRect RecWrap(IplImage* img,CvRect *a,float factor)
+{
+	CvPoint2D32f src[4];
+	CvPoint2D32f dst[4];
+	src[0].x=a->x;
+	src[0].y=a->y;
+	src[1].x=a->x+a->width;
+	src[1].y=a->y;
+	src[2].x=a->x;
+	src[2].y=a->y+a->height;
+	src[3].x=a->x+a->width;
+	src[3].y=a->y+a->height;
+	
+	if(factor>0)
+	{
+		dst[0].x=a->x;
+		dst[0].y=a->y;
+		dst[1].x=a->x+(1-factor)*a->width;
+		dst[1].y=a->y;
+		dst[2].x=a->x;
+		dst[2].y=a->y+a->height;
+		dst[3].x=a->x+(1-factor)*a->width;
+		dst[3].y=a->y+a->height;
+	}
+	else
+	{
+		dst[0].x=a->x+factor*a->width;
+		dst[0].y=a->y;
+		dst[1].x=a->x+a->width;
+		dst[1].y=a->y;
+		dst[2].x=a->x+factor*a->width;
+		dst[2].y=a->y+a->height;
+		dst[3].x=a->x+a->width;
+		dst[3].y=a->y+a->height;
+	}
+	
+	IplImage *dest=cvCreateImage(getsize(img),IPL_DEPTH_32F,3);//=cv::CroppedImage(a);
+	CvMat * mapmat;
+	cvGetPerspectiveTransform(src,dst,mapmat);
+	cvWarpPerspective(img,dest,mapmat,CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS,cvScalarAll(0));
+	CvRect rec;
+	rec.x=dst[0].x;
+	rec.y=dst[0].y;
+	rec.width=dst[3].x-dst[0].x;
+	rec.height=dst[3].y-dst[0].y;
+	
+}
+
+CvRect RecRotate(IplImage* img,CvRect *a,CvPoint *src,CvPoint *dst,int angle)
+{
+	;
+}
+
+CvRect RecResize(IplImage* img,CvRect *a,CvPoint *src,CvPoint *dst,int factor)
+{
+	;
+}
+
+int main()
+{
+	;
+}
