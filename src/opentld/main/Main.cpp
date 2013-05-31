@@ -23,7 +23,7 @@
  *      Author: Georg Nebehay
  */
 
-/*Git Update ohoooo*/
+/*Git Update ohoooo1*/
 
 #include "Main.h"
 #include<X11/Xlib.h>
